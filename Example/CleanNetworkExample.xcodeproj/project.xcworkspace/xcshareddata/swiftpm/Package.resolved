@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "cleannetwork",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alperen23230/CleanNetwork",
+      "state" : {
+        "branch" : "main",
+        "revision" : "97cdfb05546ac78821a2bf75fd5afd17df875030"
+      }
+    }
+  ],
+  "version" : 2
+}
