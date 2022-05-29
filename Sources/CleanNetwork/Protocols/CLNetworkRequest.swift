@@ -7,7 +7,7 @@
 
 public protocol CLNetworkRequest {
     associatedtype ResponseType: Decodable
-    associatedtype APIErrorType: Error & Decodable
+    associatedtype APIErrorType: Decodable & Error
     
     var endpoint: CLEndpoint { get }
     var method: CLHTTPMethod { get }

@@ -8,11 +8,11 @@
 import Foundation
 
 public class CLNetworkService: NetworkService {
-
-    let decoder: JSONDecoder
     
-    public init(decoder: JSONDecoder = JSONDecoder()) {
-        self.decoder = decoder
+    var config: CLNetworkConfig
+    
+    public init(config: CLNetworkConfig = CLNetworkConfig.shared) {
+        self.config = config
     }
     
     public func fetch<T: CLNetworkRequest>(_ request: T) async throws -> T.ResponseType {
@@ -21,7 +21,7 @@ public class CLNetworkService: NetworkService {
         
         let data: T.ResponseType = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
-            URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
@@ -32,11 +32,12 @@ public class CLNetworkService: NetworkService {
                     do {
                         guard let urlResponse = response as? HTTPURLResponse,
                               (200...299).contains(urlResponse.statusCode) else {
-                            let decodedErrorResponse = try self.decoder.decode(T.APIErrorType.self, from: data)
-                                  continuation.resume(throwing: decodedErrorResponse)
-                                  return
-                              }
-                        let decodedData = try self.decoder.decode(T.ResponseType.self, from: data)
+                            let decodedErrorResponse = try self.config.decoder.decode(T.APIErrorType.self,
+                                                                                      from: data)
+                            continuation.resume(throwing: decodedErrorResponse)
+                            return
+                        }
+                        let decodedData = try self.config.decoder.decode(T.ResponseType.self, from: data)
                         continuation.resume(returning: decodedData)
                     } catch {
                         continuation.resume(throwing: error)
