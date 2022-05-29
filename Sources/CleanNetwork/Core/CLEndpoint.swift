@@ -7,18 +7,25 @@
 
 import Foundation
 
+public var BASE_URL = ""
+public var URL_SCHEME = "https"
+
 public struct CLEndpoint {
-    var baseURL: String?
-    var path: String
-    var queryItems: [URLQueryItem] = []
+    public var path: String
+    public var queryItems: [URLQueryItem]
+    
+    public init(path: String, queryItems: [URLQueryItem] = []) {
+        self.path = path
+        self.queryItems = queryItems
+    }
 }
 
 // MARK: - URL
 public extension CLEndpoint {
     var url: URL {
         var components = URLComponents()
-        components.scheme = "https"
-        components.host = baseURL
+        components.scheme = URL_SCHEME
+        components.host = BASE_URL
         components.path = "/" + path
         components.queryItems = queryItems
         
@@ -29,5 +36,12 @@ public extension CLEndpoint {
         }
         
         return url
+    }
+}
+
+// MARK: - Equatable
+extension CLEndpoint: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.url == rhs.url
     }
 }
