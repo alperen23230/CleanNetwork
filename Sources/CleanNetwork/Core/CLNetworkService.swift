@@ -26,7 +26,7 @@ public class CLNetworkService: NetworkService {
                     continuation.resume(throwing: error)
                 } else {
                     guard let data = data else {
-                        // Throw data nil error
+                        continuation.resume(throwing: CLError.dataIsNil)
                         return
                     }
                     do {
