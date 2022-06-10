@@ -23,10 +23,14 @@ public class CLNetworkService: NetworkService {
             guard let self = self else { return }
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
-                    continuation.resume(throwing: error)
+                    DispatchQueue.main.async {
+                        continuation.resume(throwing: error)
+                    }
                 } else {
                     guard let data = data else {
-                        continuation.resume(throwing: CLError.dataIsNil)
+                        DispatchQueue.main.async {
+                            continuation.resume(throwing: CLError.dataIsNil)
+                        }
                         return
                     }
                     do {
@@ -34,13 +38,19 @@ public class CLNetworkService: NetworkService {
                               (200...299).contains(urlResponse.statusCode) else {
                             let decodedErrorResponse = try self.config.decoder.decode(T.APIErrorType.self,
                                                                                       from: data)
-                            continuation.resume(throwing: decodedErrorResponse)
+                            DispatchQueue.main.async {
+                                continuation.resume(throwing: decodedErrorResponse)
+                            }
                             return
                         }
                         let decodedData = try self.config.decoder.decode(T.ResponseType.self, from: data)
-                        continuation.resume(returning: decodedData)
+                        DispatchQueue.main.async {
+                            continuation.resume(returning: decodedData)
+                        }
                     } catch {
-                        continuation.resume(throwing: error)
+                        DispatchQueue.main.async {
+                            continuation.resume(throwing: error)
+                        }
                     }
                 }
             }
