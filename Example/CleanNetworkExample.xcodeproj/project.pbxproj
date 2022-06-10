@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84462D9728539F7100A22ECD /* CleanNetwork in Frameworks */ = {isa = PBXBuildFile; productRef = 84462D9628539F7100A22ECD /* CleanNetwork */; };
 		84FA649028310BCA00F10993 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FA648F28310BCA00F10993 /* AppDelegate.swift */; };
 		84FA649228310BCA00F10993 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FA649128310BCA00F10993 /* SceneDelegate.swift */; };
 		84FA649428310BCA00F10993 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FA649328310BCA00F10993 /* ViewController.swift */; };
 		84FA649728310BCA00F10993 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84FA649528310BCA00F10993 /* Main.storyboard */; };
 		84FA649928310BCA00F10993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84FA649828310BCA00F10993 /* Assets.xcassets */; };
 		84FA649C28310BCA00F10993 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84FA649A28310BCA00F10993 /* LaunchScreen.storyboard */; };
-		84FA64A528310C2A00F10993 /* CleanNetwork in Frameworks */ = {isa = PBXBuildFile; productRef = 84FA64A428310C2A00F10993 /* CleanNetwork */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,7 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84FA64A528310C2A00F10993 /* CleanNetwork in Frameworks */,
+				84462D9728539F7100A22ECD /* CleanNetwork in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +86,7 @@
 			);
 			name = CleanNetworkExample;
 			packageProductDependencies = (
-				84FA64A428310C2A00F10993 /* CleanNetwork */,
+				84462D9628539F7100A22ECD /* CleanNetwork */,
 			);
 			productName = CleanNetworkExample;
 			productReference = 84FA648C28310BCA00F10993 /* CleanNetworkExample.app */;
@@ -117,7 +117,7 @@
 			);
 			mainGroup = 84FA648328310BCA00F10993;
 			packageReferences = (
-				84FA64A328310C2900F10993 /* XCRemoteSwiftPackageReference "CleanNetwork" */,
+				84462D9528539F7100A22ECD /* XCRemoteSwiftPackageReference "CleanNetwork" */,
 			);
 			productRefGroup = 84FA648D28310BCA00F10993 /* Products */;
 			projectDirPath = "";
@@ -370,7 +370,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		84FA64A328310C2900F10993 /* XCRemoteSwiftPackageReference "CleanNetwork" */ = {
+		84462D9528539F7100A22ECD /* XCRemoteSwiftPackageReference "CleanNetwork" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/alperen23230/CleanNetwork";
 			requirement = {
@@ -381,9 +381,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		84FA64A428310C2A00F10993 /* CleanNetwork */ = {
+		84462D9628539F7100A22ECD /* CleanNetwork */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 84FA64A328310C2900F10993 /* XCRemoteSwiftPackageReference "CleanNetwork" */;
+			package = 84462D9528539F7100A22ECD /* XCRemoteSwiftPackageReference "CleanNetwork" */;
 			productName = CleanNetwork;
 		};
 /* End XCSwiftPackageProductDependency section */

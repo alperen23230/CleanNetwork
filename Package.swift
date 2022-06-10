@@ -19,7 +19,9 @@ let package = Package(
     targets: [
         .target(
             name: "CleanNetwork",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources"
+        ),
         .testTarget(
             name: "CleanNetworkTests",
             dependencies: ["CleanNetwork"]),
