@@ -23,14 +23,10 @@ public class CLNetworkService: NetworkService {
             guard let self = self else { return }
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
-                    DispatchQueue.main.async {
-                        continuation.resume(throwing: error)
-                    }
+                    continuation.resume(throwing: error)
                 } else {
                     guard let data = data else {
-                        DispatchQueue.main.async {
-                            continuation.resume(throwing: CLError.dataIsNil)
-                        }
+                        continuation.resume(throwing: CLError.dataIsNil)
                         return
                     }
                     do {
@@ -38,19 +34,13 @@ public class CLNetworkService: NetworkService {
                               (200...299).contains(urlResponse.statusCode) else {
                             let decodedErrorResponse = try self.config.decoder.decode(T.APIErrorType.self,
                                                                                       from: data)
-                            DispatchQueue.main.async {
-                                continuation.resume(throwing: decodedErrorResponse)
-                            }
+                            continuation.resume(throwing: decodedErrorResponse)
                             return
                         }
                         let decodedData = try self.config.decoder.decode(T.ResponseType.self, from: data)
-                        DispatchQueue.main.async {
-                            continuation.resume(returning: decodedData)
-                        }
+                        continuation.resume(returning: decodedData)
                     } catch {
-                        DispatchQueue.main.async {
-                            continuation.resume(throwing: error)
-                        }
+                        continuation.resume(throwing: error)
                     }
                 }
             }
