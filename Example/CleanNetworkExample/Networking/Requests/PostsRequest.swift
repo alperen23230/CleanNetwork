@@ -11,10 +11,8 @@ struct PostsRequest: CLNetworkRequest {
     
     typealias ResponseType = [Post]
     
-    let endpoint: CLEndpoint
+    let endpoint: CLEndpoint = CLEndpoint(path: "posts")
     let method: CLHTTPMethod = .get
     
-    init() {
-        endpoint = CLEndpoint(path: "posts")
-    }
+    init() {}
 }
