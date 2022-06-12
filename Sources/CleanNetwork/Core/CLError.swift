@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CLError: Error {
+public enum CLError: Error {
     case errorMessage(String)
     /// APIError response data, HTTP status code
     case apiError(Data, Int?)
