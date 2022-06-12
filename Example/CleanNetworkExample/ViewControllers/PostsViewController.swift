@@ -59,7 +59,23 @@ extension PostsViewController {
                 tableView.reloadData()
             }
         } catch {
-            showSimpleAlert(title: "Error", message: error.localizedDescription, actionTitle: "Retry") {
+            var errorMessage: String
+            if let error = error as? CLError {
+                switch error {
+                case .errorMessage(let message):
+                    errorMessage = message
+                case .apiError(let data, let statusCode):
+                    if let statusCode = statusCode {
+                        print(statusCode)
+                    }
+                    // If you have a API error type handle here with 'data'
+                    errorMessage = "API Error"
+                }
+            } else {
+                errorMessage = error.localizedDescription
+            }
+            
+            showSimpleAlert(title: "Error", message: errorMessage, actionTitle: "Retry") {
                 Task { [weak self] in
                     await self?.fetchPosts()
                 }
