@@ -26,15 +26,17 @@ public class CLNetworkService: NetworkService {
                     continuation.resume(throwing: error)
                 } else {
                     guard let data = data else {
-                        continuation.resume(throwing: CLError.dataIsNil)
+                        continuation.resume(throwing: CLError.errorMessage("Error: Data is nil"))
                         return
                     }
                     do {
                         guard let urlResponse = response as? HTTPURLResponse,
                               (200...299).contains(urlResponse.statusCode) else {
-                            let decodedErrorResponse = try self.config.decoder.decode(T.APIErrorType.self,
-                                                                                      from: data)
-                            continuation.resume(throwing: decodedErrorResponse)
+                            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                                continuation.resume(throwing: CLError.apiError(data, statusCode))
+                            } else {
+                                continuation.resume(throwing: CLError.errorMessage("Error: Status code is not valid"))
+                            }
                             return
                         }
                         let decodedData = try self.config.decoder.decode(T.ResponseType.self, from: data)
