@@ -11,10 +11,12 @@ public var BASE_URL = ""
 public var URL_SCHEME = "https"
 
 public struct CLEndpoint {
+    public var baseURL: String
     public var path: String
     public var queryItems: [URLQueryItem]
     
-    public init(path: String, queryItems: [URLQueryItem] = []) {
+    public init(baseURL: String = BASE_URL, path: String, queryItems: [URLQueryItem] = []) {
+        self.baseURL = baseURL
         self.path = path
         self.queryItems = queryItems
     }
@@ -25,7 +27,7 @@ public extension CLEndpoint {
     var url: URL {
         var components = URLComponents()
         components.scheme = URL_SCHEME
-        components.host = BASE_URL
+        components.host = baseURL
         components.path = "/" + path
         components.queryItems = queryItems
         
