@@ -59,7 +59,7 @@ extension PostsViewController {
                 tableView.reloadData()
             }
         } catch {
-            var errorMessage: String
+            var errorMessage = ""
             if let error = error as? CLError {
                 switch error {
                 case .errorMessage(let message):
@@ -69,7 +69,9 @@ extension PostsViewController {
                         print(statusCode)
                     }
                     // If you have a API error type handle here with 'data'
-                    errorMessage = "API Error"
+                    if let apiError = try? JSONDecoder().decode(APIError.self, from: data) {
+                        errorMessage = apiError.errorMessage
+                    }
                 }
             } else {
                 errorMessage = error.localizedDescription
