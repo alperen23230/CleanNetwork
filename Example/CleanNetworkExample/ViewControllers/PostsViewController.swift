@@ -63,7 +63,7 @@ extension PostsViewController {
             if let error = error as? CLError {
                 switch error {
                 case .errorMessage(let message):
-                    errorMessage = message
+                    errorMessage = message.rawValue
                 case .apiError(let data, let statusCode):
                     if let statusCode = statusCode {
                         print(statusCode)
