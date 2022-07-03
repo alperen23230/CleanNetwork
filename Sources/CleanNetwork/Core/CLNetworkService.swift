@@ -39,7 +39,7 @@ public class CLNetworkService: NetworkService {
                     continuation.resume(throwing: error)
                 } else {
                     guard let data = data else {
-                        continuation.resume(throwing: CLError.errorMessage("Error: Data is nil"))
+                        continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
                         return
                     }
                     do {
@@ -48,7 +48,7 @@ public class CLNetworkService: NetworkService {
                             if let statusCode = (response as? HTTPURLResponse)?.statusCode {
                                 continuation.resume(throwing: CLError.apiError(data, statusCode))
                             } else {
-                                continuation.resume(throwing: CLError.errorMessage("Error: Status code is not valid"))
+                                continuation.resume(throwing: CLError.errorMessage(.statusCodeIsNotValid))
                             }
                             return
                         }
