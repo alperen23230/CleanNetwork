@@ -13,6 +13,9 @@
 		8450B593285483340018778F /* UITableView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450B592285483340018778F /* UITableView+Loading.swift */; };
 		8450B596285484B60018778F /* AlertingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450B595285484B60018778F /* AlertingController.swift */; };
 		8450B5992854853E0018778F /* Closures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450B5982854853E0018778F /* Closures.swift */; };
+		845ABA702871A5ED00230200 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABA6F2871A5ED00230200 /* CreatePostViewController.swift */; };
+		845ABA722871A81C00230200 /* CreatePostRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABA712871A81C00230200 /* CreatePostRequestBody.swift */; };
+		845ABA742871A86C00230200 /* CreatePostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845ABA732871A86C00230200 /* CreatePostRequest.swift */; };
 		8460D0342854BFDC00E4C939 /* PostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8460D0332854BFDC00E4C939 /* PostsRequest.swift */; };
 		8460D0392854C22300E4C939 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8460D0372854C22300E4C939 /* PostTableViewCell.swift */; };
 		8460D03A2854C22300E4C939 /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8460D0382854C22300E4C939 /* PostTableViewCell.xib */; };
@@ -30,6 +33,9 @@
 		8450B592285483340018778F /* UITableView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Loading.swift"; sourceTree = "<group>"; };
 		8450B595285484B60018778F /* AlertingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertingController.swift; sourceTree = "<group>"; };
 		8450B5982854853E0018778F /* Closures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closures.swift; sourceTree = "<group>"; };
+		845ABA6F2871A5ED00230200 /* CreatePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewController.swift; sourceTree = "<group>"; };
+		845ABA712871A81C00230200 /* CreatePostRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostRequestBody.swift; sourceTree = "<group>"; };
+		845ABA732871A86C00230200 /* CreatePostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostRequest.swift; sourceTree = "<group>"; };
 		8460D0332854BFDC00E4C939 /* PostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsRequest.swift; sourceTree = "<group>"; };
 		8460D0372854C22300E4C939 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		8460D0382854C22300E4C939 /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
@@ -68,6 +74,7 @@
 			children = (
 				8431B53C2854C560002056FC /* Post.swift */,
 				84A900372868D94500E3D6F1 /* APIError.swift */,
+				845ABA712871A81C00230200 /* CreatePostRequestBody.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -77,6 +84,7 @@
 			children = (
 				84FA649328310BCA00F10993 /* MainViewController.swift */,
 				8450B58F285482070018778F /* PostsViewController.swift */,
+				845ABA6F2871A5ED00230200 /* CreatePostViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -117,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				8460D0332854BFDC00E4C939 /* PostsRequest.swift */,
+				845ABA732871A86C00230200 /* CreatePostRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -256,8 +265,11 @@
 				8450B5992854853E0018778F /* Closures.swift in Sources */,
 				84A900382868D94500E3D6F1 /* APIError.swift in Sources */,
 				8460D0392854C22300E4C939 /* PostTableViewCell.swift in Sources */,
+				845ABA742871A86C00230200 /* CreatePostRequest.swift in Sources */,
 				8450B590285482070018778F /* PostsViewController.swift in Sources */,
 				84FA649028310BCA00F10993 /* AppDelegate.swift in Sources */,
+				845ABA722871A81C00230200 /* CreatePostRequestBody.swift in Sources */,
+				845ABA702871A5ED00230200 /* CreatePostViewController.swift in Sources */,
 				8431B53D2854C560002056FC /* Post.swift in Sources */,
 				8450B593285483340018778F /* UITableView+Loading.swift in Sources */,
 				8450B596285484B60018778F /* AlertingController.swift in Sources */,

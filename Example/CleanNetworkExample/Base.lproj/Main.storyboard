@@ -17,15 +17,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pqW-7L-2bY">
-                                <rect key="frame" x="116.5" y="433" width="181" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="pqW-7L-2bY">
+                                <rect key="frame" x="86" y="411.5" width="242.5" height="73"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gwd-2u-X3v">
-                                        <rect key="frame" x="0.0" y="0.0" width="181" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="242.5" height="30"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Posts (simple get request)"/>
                                         <connections>
                                             <segue destination="Fdv-vL-1xz" kind="show" id="4W1-uy-hma"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n9W-Ka-f16">
+                                        <rect key="frame" x="0.0" y="42" width="242.5" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Create post (Simple post request)"/>
+                                        <connections>
+                                            <segue destination="Szj-7L-KEc" kind="show" id="K4t-Dw-fog"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -43,6 +51,56 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1039.1304347826087" y="79.6875"/>
+        </scene>
+        <!--Create Post View Controller-->
+        <scene sceneID="Mer-0i-m9A">
+            <objects>
+                <viewController id="Szj-7L-KEc" customClass="CreatePostViewController" customModule="CleanNetworkExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dKs-V8-NM6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Otf-d4-yZW">
+                                <rect key="frame" x="32" y="439.5" width="350" height="123"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xiq-Wv-s8e">
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Body" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ixd-fd-zOl">
+                                        <rect key="frame" x="0.0" y="46" width="350" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMt-Fa-xzp">
+                                        <rect key="frame" x="0.0" y="92" width="350" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Create Post"/>
+                                        <connections>
+                                            <action selector="createPostButtonTapped:" destination="Szj-7L-KEc" eventType="touchUpInside" id="c9e-Xz-KZj"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aue-0h-LK1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Otf-d4-yZW" firstAttribute="leading" secondItem="aue-0h-LK1" secondAttribute="leading" constant="32" id="OkN-Od-Ghz"/>
+                            <constraint firstItem="Otf-d4-yZW" firstAttribute="centerY" secondItem="aue-0h-LK1" secondAttribute="centerY" id="ibc-nK-KpB"/>
+                            <constraint firstItem="aue-0h-LK1" firstAttribute="trailing" secondItem="Otf-d4-yZW" secondAttribute="trailing" constant="32" id="oPx-VH-pFy"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="fFW-F9-oxH"/>
+                    <connections>
+                        <outlet property="bodyTextField" destination="Ixd-fd-zOl" id="Y1T-x0-KQ6"/>
+                        <outlet property="titleTextField" destination="xiq-Wv-s8e" id="OdI-99-9y2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cgp-p0-KaV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1970" y="493"/>
         </scene>
         <!--Posts View Controller-->
         <scene sceneID="QVo-m4-qQo">
@@ -73,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5tt-N4-eEU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1976.8115942028987" y="-65.625"/>
+            <point key="canvasLocation" x="1970" y="-202"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="W9r-mF-xEI">

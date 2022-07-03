@@ -9,7 +9,6 @@ import UIKit
 import CleanNetwork
 
 final class PostsViewController: UIViewController, AlertingController {
-    
     @IBOutlet private weak var tableView: UITableView!
     
     private var posts: [Post] = []

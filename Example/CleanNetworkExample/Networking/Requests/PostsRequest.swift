@@ -8,7 +8,6 @@
 import CleanNetwork
 
 struct PostsRequest: CLNetworkRequest {
-    
     typealias ResponseType = [Post]
     
     let endpoint: CLEndpoint = CLEndpoint(path: "posts")
