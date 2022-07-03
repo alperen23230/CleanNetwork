@@ -19,6 +19,17 @@ class CLNetworkRequestTests: XCTestCase {
         try await super.tearDown()
     }
     
+    func test_post_request() throws {
+        let endpoint = CLEndpoint(path: "/mockPost")
+        let method: CLHTTPMethod = .post
+        let requestBody = MockRequestBodyModel()
+        let mockRequest = MockBodyRequest(endpoint: endpoint, method: method, requestBody: requestBody)
+        
+        XCTAssertEqual(mockRequest.endpoint, endpoint)
+        XCTAssertEqual(mockRequest.method, method)
+        XCTAssertEqual(mockRequest.requestBody, requestBody)
+    }
+    
     func test_request() throws {
         let endpoint = CLEndpoint(path: "/mock")
         let method: CLHTTPMethod = .get

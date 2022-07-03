@@ -11,6 +11,7 @@ public class CLNetworkConfig {
     public static let shared = CLNetworkConfig()
 
     public var decoder = JSONDecoder()
+    public var encoder = JSONEncoder()
     public var urlSession = URLSession.shared
 
     public init() {}

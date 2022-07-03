@@ -15,11 +15,22 @@ public class CLNetworkService: NetworkService {
         self.config = config
     }
     
+    public func fetch<T: CLNetworkBodyRequest>(_ request: T) async throws -> T.ResponseType {
+        var urlRequest = URLRequest(url: request.endpoint.url)
+        urlRequest.httpMethod = request.method.rawValue
+        let requestBody = try config.encoder.encode(request.requestBody)
+        urlRequest.httpBody = requestBody
+        return try await fetch(urlRequest: urlRequest)
+    }
+    
     public func fetch<T: CLNetworkRequest>(_ request: T) async throws -> T.ResponseType {
         var urlRequest = URLRequest(url: request.endpoint.url)
         urlRequest.httpMethod = request.method.rawValue
-        
-        let data: T.ResponseType = try await withCheckedThrowingContinuation { [weak self] continuation in
+        return try await fetch(urlRequest: urlRequest)
+    }
+    
+    func fetch<T: Decodable>(urlRequest: URLRequest) async throws -> T {
+        let data: T = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if let error = error {
@@ -39,7 +50,7 @@ public class CLNetworkService: NetworkService {
                             }
                             return
                         }
-                        let decodedData = try self.config.decoder.decode(T.ResponseType.self, from: data)
+                        let decodedData = try self.config.decoder.decode(T.self, from: data)
                         continuation.resume(returning: decodedData)
                     } catch {
                         continuation.resume(throwing: error)
