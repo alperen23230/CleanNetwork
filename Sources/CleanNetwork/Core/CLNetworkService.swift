@@ -17,6 +17,7 @@ public class CLNetworkService: NetworkService {
     
     public func fetch<T: CLNetworkBodyRequest>(_ request: T) async throws -> T.ResponseType {
         var urlRequest = URLRequest(url: request.endpoint.url)
+        urlRequest.allHTTPHeaderFields = request.headers
         urlRequest.httpMethod = request.method.rawValue
         let requestBody = try config.encoder.encode(request.requestBody)
         urlRequest.httpBody = requestBody
@@ -25,6 +26,7 @@ public class CLNetworkService: NetworkService {
     
     public func fetch<T: CLNetworkRequest>(_ request: T) async throws -> T.ResponseType {
         var urlRequest = URLRequest(url: request.endpoint.url)
+        urlRequest.allHTTPHeaderFields = request.headers
         urlRequest.httpMethod = request.method.rawValue
         return try await fetch(urlRequest: urlRequest)
     }
