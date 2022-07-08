@@ -12,7 +12,6 @@ struct CreatePostRequest: CLNetworkBodyRequest {
     
     let endpoint: CLEndpoint = CLEndpoint(path: "posts")
     let requestBody: CreatePostRequestBody
-    let headers: [String: String] = ["Content-Type": "application/json; charset=utf-8"]
     
     init(requestBody: CreatePostRequestBody) {
         self.requestBody = requestBody
