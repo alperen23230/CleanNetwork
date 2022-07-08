@@ -20,13 +20,18 @@ struct CLNetworkLogger {
         let host = urlComponents?.host ?? ""
         
         var output = """
-           \(urlAsString) \n\n
-           \(method) \(path)?\(query) HTTP/1.1 \n
+           URL: \(urlAsString) \n\n
+           METHOD: \(method) PATH: \(path)?\(query) HTTP/1.1 \n
            HOST: \(host)\n
            """
-        for (key,value) in request.allHTTPHeaderFields ?? [:] {
-            output += "\(key): \(value) \n"
+        if let httpHeaders = request.allHTTPHeaderFields {
+            output += "HTTP Headers: \n"
+            for (key,value) in httpHeaders {
+                output += "\(key): \(value) \n"
+            }
+            output += "HTTP Headers End \n"
         }
+        
         if let body = request.httpBody {
             output += "\n \(String(data: body, encoding: .utf8) ?? "")"
         }
@@ -44,24 +49,50 @@ struct CLNetworkLogger {
         
         var output = ""
         if let urlString = urlString {
-            output += "\(urlString)"
+            output += "URL: \(urlString)"
             output += "\n\n"
         }
-        if let statusCode =  response?.statusCode {
-            output += "HTTP \(statusCode) \(path)?\(query)\n"
+        if let statusCode = response?.statusCode {
+            output += "HTTP \(statusCode) PATH: \(path)?\(query)\n"
         }
         if let host = components?.host {
             output += "Host: \(host)\n"
         }
-        for (key, value) in response?.allHeaderFields ?? [:] {
-            output += "\(key): \(value)\n"
+        if let httpHeaders = response?.allHeaderFields {
+            output += "HTTP Headers: \n"
+            for (key,value) in httpHeaders {
+                output += "\(key): \(value) \n"
+            }
+            output += "HTTP Headers End \n"
         }
         if let body = data {
             output += "\n\(String(data: body, encoding: .utf8) ?? "")\n"
         }
         if error != nil {
+            if let error = error as? DecodingError {
+                Self.logDecodingError(with: error)
+            }
             output += "\nError: \(error!.localizedDescription)\n"
         }
         print(output)
+    }
+    
+    static private func logDecodingError(with error: DecodingError) {
+        print("\n\nDecoding Error\n")
+        switch error {
+        case .typeMismatch(let type, let context):
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        case .valueNotFound(let value, let context):
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        case .keyNotFound(let key, let context):
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        case .dataCorrupted(let context):
+            print(context)
+        @unknown default:
+            print("Unknown decoding error")
+        }
     }
 }
