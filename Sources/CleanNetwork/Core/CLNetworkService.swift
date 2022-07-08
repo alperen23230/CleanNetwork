@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CLNetworkService: NetworkService {
+public struct CLNetworkService: NetworkService {
     
     var config: CLNetworkConfig
     
@@ -32,9 +32,16 @@ public class CLNetworkService: NetworkService {
     }
     
     func fetch<T: Decodable>(urlRequest: URLRequest) async throws -> T {
-        let data: T = try await withCheckedThrowingContinuation { [weak self] continuation in
-            guard let self = self else { return }
+        if config.loggerEnabled {
+            CLNetworkLogger.log(request: urlRequest)
+        }
+        let data: T = try await withCheckedThrowingContinuation { continuation in
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
+                if config.loggerEnabled {
+                    if let urlResponse = response as? HTTPURLResponse {
+                        CLNetworkLogger.log(data: data, response: urlResponse, error: error)
+                    }
+                }
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {

@@ -13,6 +13,7 @@ public class CLNetworkConfig {
     public var decoder = JSONDecoder()
     public var encoder = JSONEncoder()
     public var urlSession = URLSession.shared
+    public var loggerEnabled = true
 
     public init() {}
 }
