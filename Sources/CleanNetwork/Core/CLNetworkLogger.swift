@@ -24,7 +24,7 @@ struct CLNetworkLogger {
            METHOD: \(method) PATH: \(path)?\(query) HTTP/1.1 \n
            HOST: \(host)\n
            """
-        if let httpHeaders = request.allHTTPHeaderFields {
+        if let httpHeaders = request.allHTTPHeaderFields, !httpHeaders.isEmpty {
             output += "HTTP Headers: \n"
             for (key,value) in httpHeaders {
                 output += "\(key): \(value) \n"
@@ -58,7 +58,7 @@ struct CLNetworkLogger {
         if let host = components?.host {
             output += "Host: \(host)\n"
         }
-        if let httpHeaders = response?.allHeaderFields {
+        if let httpHeaders = response?.allHeaderFields, !httpHeaders.isEmpty {
             output += "HTTP Headers: \n"
             for (key,value) in httpHeaders {
                 output += "\(key): \(value) \n"
