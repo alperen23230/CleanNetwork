@@ -69,15 +69,12 @@ struct CLNetworkLogger {
             output += "\n\(String(data: body, encoding: .utf8) ?? "")\n"
         }
         if error != nil {
-            if let error = error as? DecodingError {
-                Self.logDecodingError(with: error)
-            }
             output += "\nError: \(error!.localizedDescription)\n"
         }
         print(output)
     }
     
-    static private func logDecodingError(with error: DecodingError) {
+    static func logDecodingError(with error: DecodingError) {
         print("\n\nDecoding Error\n")
         switch error {
         case .typeMismatch(let type, let context):

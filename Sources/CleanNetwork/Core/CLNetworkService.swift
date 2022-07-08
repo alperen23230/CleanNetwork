@@ -37,10 +37,8 @@ public struct CLNetworkService: NetworkService {
         }
         let data: T = try await withCheckedThrowingContinuation { continuation in
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
-                if config.loggerEnabled {
-                    if let urlResponse = response as? HTTPURLResponse {
-                        CLNetworkLogger.log(data: data, response: urlResponse, error: error)
-                    }
+                if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
+                    CLNetworkLogger.log(data: data, response: urlResponse, error: error)
                 }
                 if let error = error {
                     continuation.resume(throwing: error)
@@ -62,6 +60,9 @@ public struct CLNetworkService: NetworkService {
                         let decodedData = try self.config.decoder.decode(T.self, from: data)
                         continuation.resume(returning: decodedData)
                     } catch {
+                        if config.loggerEnabled, let error = error as? DecodingError {
+                            CLNetworkLogger.logDecodingError(with: error)
+                        }
                         continuation.resume(throwing: error)
                     }
                 }
