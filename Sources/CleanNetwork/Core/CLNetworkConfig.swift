@@ -14,6 +14,7 @@ public class CLNetworkConfig {
     public var encoder = JSONEncoder()
     public var urlSession = URLSession.shared
     public var loggerEnabled = true
+    public var sharedHeaders: [String: String] = [:]
 
     public init() {}
 }
