@@ -9,7 +9,7 @@ import CleanNetwork
 
 struct MockAPIResponse: Decodable {}
 
-struct MockRequest: CLNetworkRequest {
+struct MockRequest: CLNetworkDecodableRequest {
     typealias ResponseType = MockAPIResponse
     
     let endpoint: CLEndpoint

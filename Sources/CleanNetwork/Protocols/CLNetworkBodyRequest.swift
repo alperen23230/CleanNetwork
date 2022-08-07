@@ -5,7 +5,7 @@
 //  Created by Alperen Ünal on 3.07.2022.
 //
 
-public protocol CLNetworkBodyRequest: CLNetworkRequest {
+public protocol CLNetworkBodyRequest: CLNetworkDecodableRequest {
     associatedtype RequestBodyType: Encodable
     
     var requestBody: RequestBodyType { get }
