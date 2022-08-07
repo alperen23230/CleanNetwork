@@ -9,7 +9,7 @@ import Foundation
 
 public struct CLNetworkService: NetworkService {
     
-    static let shared = CLNetworkService()
+    public static let shared = CLNetworkService()
     
     var config: CLNetworkConfig
     
