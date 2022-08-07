@@ -12,7 +12,6 @@ final class PostsViewController: UIViewController, AlertingController {
     @IBOutlet private weak var tableView: UITableView!
     
     private var posts: [Post] = []
-    private let networkService = CLNetworkService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +51,7 @@ extension PostsViewController {
         let request = PostsRequest()
         tableView.startLoading()
         do {
-            posts = try await networkService.fetch(request)
+            posts = try await CLNetworkService.shared.fetch(request)
             await MainActor.run {
                 tableView.stopLoading()
                 tableView.reloadData()

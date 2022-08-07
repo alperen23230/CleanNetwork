@@ -12,8 +12,6 @@ final class CreatePostViewController: UIViewController, AlertingController {
     @IBOutlet private weak var titleTextField: UITextField!
     @IBOutlet private weak var bodyTextField: UITextField!
     
-    private let networkService = CLNetworkService()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -36,7 +34,7 @@ extension CreatePostViewController {
         let requestBody = CreatePostRequestBody(userId: 1, title: title, body: body)
         let request = CreatePostRequest(requestBody: requestBody)
         do {
-            let response = try await networkService.fetch(request)
+            let response = try await CLNetworkService.shared.fetch(request)
             showSimpleAlert(title: "Successfull", message: "Post added with id: \(response.id)")
         } catch {
             var errorMessage = ""
