@@ -9,6 +9,8 @@ import Foundation
 
 public struct CLNetworkService: NetworkService {
     
+    static let shared = CLNetworkService()
+    
     var config: CLNetworkConfig
     
     public init(config: CLNetworkConfig = CLNetworkConfig.shared) {
