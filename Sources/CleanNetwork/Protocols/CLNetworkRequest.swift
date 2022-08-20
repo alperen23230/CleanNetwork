@@ -11,7 +11,7 @@ public protocol CLNetworkRequest {
     var headers: [String: String] { get }
 }
 
-public extension CLNetworkDecodableRequest {
+public extension CLNetworkRequest {
     var method: CLHTTPMethod {
         return .get
     }
