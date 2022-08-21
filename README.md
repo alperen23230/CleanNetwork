@@ -5,7 +5,7 @@
 ![platforms](https://img.shields.io/badge/platforms-macOS--10.15_iOS--13_tvOS--13_watchOS--6-yellowgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-CleanNetwork is a URLSession wrapper for using async/await. You can use CleanNetwork for creating a modular network layer in projects. CleanNetwork is best way to combine asnc/await with networking.
+CleanNetwork is a lightweight URLSession wrapper for using async/await in networking. You can use CleanNetwork for creating a modular network layer in projects. CleanNetwork is best way to combine asnc/await with networking. Feel free to contribute :)
 
 ## Installation
 ### Swift Package Manager
@@ -18,9 +18,7 @@ dependencies: [
 ]
 ```
 
-## Usage
-
-### Simple Usage
+## Simple Usage
 Firstly you have to create a request object for sending request. You can use `CLNetworkDecodableRequest` type for this.
 
 ```swift
@@ -36,7 +34,7 @@ struct ExampleRequest: CLNetworkDecodableRequest {
     }
 }
 ```
-#### Creating CLEndpoint
+### Creating CLEndpoint
 CLEndpoint is a struct which represents an API endpoint. It has a baseURL, path and queryItems variables. For baseURL, there is a global variable for this. It's called `BASE_URL`. (For example you can set BASE_URL in AppDelegate) For url scheme, it uses `https` by default but you can change using `URL_SCHEME` global variable.
 
 ```swift
@@ -53,14 +51,14 @@ public struct CLEndpoint {
 }
 ```
 
-#### Creating Request Object
+### Creating Request Object
 ```swift
 let endpoint = CLEndpoint(path: "/example")
 let method: CLHTTPMethod = .get
 let exampleRequest = ExampleRequest(endpoint: endpoint, method: method) 
 ```
 
-#### Sending Request
+### Sending Request
 You have to use `CLNetworkService` for sending request. You can use both shared object or creating object. Use `fetch` method of network service object.
 
 ```swift
@@ -74,12 +72,11 @@ do {
 }
 ```
 
-### Advance Usage
-
-#### Requests
+## Advance Usage
+### Requests
 There are 3 request protocol. 
 
-`CLNetworkRequest` is the basic protocol. It's for fetching raw `Data`.
+`CLNetworkRequest` is the basic protocol. It's for fetching raw `Data`. By default `method` is GET and `headers` are empty.
 
 ```swift
 public protocol CLNetworkRequest {
@@ -101,7 +98,7 @@ public protocol CLNetworkDecodableRequest: CLNetworkRequest {
 }
 ```
 
-`CLNetworkBodyRequest` is for sending body request. You have to specify body type in your request. It has to be `Encodable`.
+`CLNetworkBodyRequest` is for sending body request. You have to specify body type in your request. It has to be `Encodable`. By default `method` is POST.
 
 ```swift
 public protocol CLNetworkBodyRequest: CLNetworkDecodableRequest {
@@ -110,4 +107,29 @@ public protocol CLNetworkBodyRequest: CLNetworkDecodableRequest {
     var requestBody: RequestBodyType { get }
 }
 ```
+### Customize CLNetworkService
 
+When you want to customize the `CLNetworkService` you have to use the `CLNetworkConfig` model. CLNetworkService takes this object in its initializer. By default it uses shared object of `CLNetworkConfig`.
+
+```swift
+public init(config: CLNetworkConfig = CLNetworkConfig.shared) {
+    self.config = config
+}
+```
+
+#### CLNetworkConfig
+You can use both shared object or creating instance yourself. 
+
+```swift
+public class CLNetworkConfig {
+    public static let shared = CLNetworkConfig()
+
+    public var decoder = JSONDecoder()
+    public var encoder = JSONEncoder()
+    public var urlSession = URLSession.shared
+    public var loggerEnabled = true
+    public var sharedHeaders: [String: String] = [:]
+
+    public init() {}
+}
+```
