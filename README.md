@@ -21,6 +21,7 @@
     - [Requests](#requests)
     - [Customize CLNetworkService](#customize-clnetworkservice)
       - [CLNetworkConfig](#clnetworkconfig)
+    - [Error Handling](#error-handling)
 
 ## Installation
 ### Swift Package Manager
@@ -148,3 +149,17 @@ public class CLNetworkConfig {
     public init() {}
 }
 ```
+
+### Error Handling
+There is an error enum for unique errors. It's called `CLError`. 
+
+```swift
+public enum CLError: Error {
+    case errorMessage(CLErrorMessage)
+    /// APIError response data, HTTP status code
+    case apiError(Data, Int?)
+}
+```
+The enum has a 2 case. The first case, `errorMessage` case is for handling known errors. (For example data returning nil.)
+
+The second case, `apiError` case is for handling API error json models. This case is an associated value case. It's returning the data which will decode. Also returns the HTTP status code to handle some situations.
