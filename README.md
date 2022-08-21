@@ -4,7 +4,7 @@
 ![swift](https://img.shields.io/badge/swift-5.5-orange?logo=swift)
 ![platforms](https://img.shields.io/badge/platforms-macOS--10.15_iOS--13_tvOS--13_watchOS--6-yellowgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
-![Twitter: @alperenunal68](https://img.shields.io/badge/twitter-@alperenunal68-blue.svg?style=flat)
+[![Twitter:@alperenunal68](https://img.shields.io/badge/twitter-@alperenunal68-blue.svg?style=flat)](https://twitter.com/alperenunal68)
 
 `CleanNetwork` is a lightweight URLSession wrapper for using async/await in networking. You can use CleanNetwork for creating a modular network layer in projects. CleanNetwork is best way to combine asnc/await with networking. Feel free to contribute :)
 
