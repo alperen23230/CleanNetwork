@@ -24,6 +24,10 @@ let package = Package(
         ),
         .testTarget(
             name: "CleanNetworkTests",
-            dependencies: ["CleanNetwork"]),
+            dependencies: ["CleanNetwork"],
+            resources: [
+                .process("Supporting Files")
+            ]
+        )
     ]
 )
