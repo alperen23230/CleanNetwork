@@ -43,65 +43,32 @@ public struct CLNetworkService: NetworkService {
         return try await fetchData(urlRequest: urlRequest)
     }
     
+    private var successRange = Set(200...299)
+    
     func fetch<T: Decodable>(urlRequest: URLRequest) async throws -> T {
         if config.loggerEnabled {
             CLNetworkLogger.log(request: urlRequest)
         }
-        let data: T = try await withCheckedThrowingContinuation { continuation in
+        
+        return try await withCheckedThrowingContinuation { continuation in
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
                     CLNetworkLogger.log(data: data, response: urlResponse, error: error)
                 }
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    guard let data = data else {
-                        continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
-                        return
-                    }
-                    do {
-                        guard let urlResponse = response as? HTTPURLResponse,
-                              (200...299).contains(urlResponse.statusCode) else {
-                            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                                continuation.resume(throwing: CLError.apiError(data, statusCode))
-                            } else {
-                                continuation.resume(throwing: CLError.errorMessage(.statusCodeIsNotValid))
-                            }
-                            return
-                        }
-                        let decodedData = try self.config.decoder.decode(T.self, from: data)
-                        continuation.resume(returning: decodedData)
-                    } catch {
-                        if config.loggerEnabled, let error = error as? DecodingError {
-                            CLNetworkLogger.logDecodingError(with: error)
-                        }
-                        continuation.resume(throwing: error)
-                    }
+                
+                guard error == nil else {
+                    continuation.resume(throwing: error!)
+                    return
                 }
-            }
-            .resume()
-        }
-        return data
-    }
-    
-    func fetchData(urlRequest: URLRequest) async throws -> Data {
-        if config.loggerEnabled {
-            CLNetworkLogger.log(request: urlRequest)
-        }
-        let data: Data = try await withCheckedThrowingContinuation { continuation in
-            self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
-                if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
-                    CLNetworkLogger.log(data: data, response: urlResponse, error: error)
+                
+                guard let data = data else {
+                    continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
+                    return
                 }
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    guard let data = data else {
-                        continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
-                        return
-                    }
+                
+                do {
                     guard let urlResponse = response as? HTTPURLResponse,
-                          (200...299).contains(urlResponse.statusCode) else {
+                          successRange.contains(urlResponse.statusCode) else {
                         if let statusCode = (response as? HTTPURLResponse)?.statusCode {
                             continuation.resume(throwing: CLError.apiError(data, statusCode))
                         } else {
@@ -109,11 +76,53 @@ public struct CLNetworkService: NetworkService {
                         }
                         return
                     }
-                    continuation.resume(returning: data)
+                    let decodedData = try self.config.decoder.decode(T.self, from: data)
+                    continuation.resume(returning: decodedData)
+                } catch {
+                    if config.loggerEnabled, let error = error as? DecodingError {
+                        CLNetworkLogger.logDecodingError(with: error)
+                    }
+                    
+                    continuation.resume(throwing: error)
                 }
             }
             .resume()
         }
-        return data
+    }
+    
+    func fetchData(urlRequest: URLRequest) async throws -> Data {
+        if config.loggerEnabled {
+            CLNetworkLogger.log(request: urlRequest)
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
+                if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
+                    CLNetworkLogger.log(data: data, response: urlResponse, error: error)
+                }
+                guard error == nil else {
+                    continuation.resume(throwing: error!)
+                    return
+                }
+                
+                guard let data = data else {
+                    continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
+                    return
+                }
+                
+                guard let urlResponse = response as? HTTPURLResponse,
+                      successRange.contains(urlResponse.statusCode) else {
+                    if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                        continuation.resume(throwing: CLError.apiError(data, statusCode))
+                    } else {
+                        continuation.resume(throwing: CLError.errorMessage(.statusCodeIsNotValid))
+                    }
+                    return
+                }
+                
+                continuation.resume(returning: data)
+            }
+            .resume()
+        }
     }
 }
