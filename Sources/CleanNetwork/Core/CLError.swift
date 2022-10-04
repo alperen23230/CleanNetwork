@@ -8,10 +8,15 @@
 import Foundation
 
 public enum CLError: Error {
+    
+    /// Pre-defined error cases
     case errorMessage(CLErrorMessage)
+   
     /// APIError response data, HTTP status code
     case apiError(Data, Int?)
 }
+
+// MARK: - CLErrorMessage
 
 public enum CLErrorMessage: String {
     case dataIsNil = "Error: Data is nil"
