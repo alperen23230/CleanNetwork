@@ -7,15 +7,25 @@
 
 import Foundation
 
-public var BASE_URL = ""
-public var URL_SCHEME = "https"
-
 public struct CLEndpoint {
+    
+    public enum Constant {
+        case scheme
+        case baseUrl
+        
+        public var value: String {
+            switch self {
+            case .baseUrl : return "https"
+            case .scheme : return ""
+            }
+        }
+    }
+    
     public var baseURL: String
     public var path: String
     public var queryItems: [URLQueryItem]
     
-    public init(baseURL: String = BASE_URL, path: String, queryItems: [URLQueryItem] = []) {
+    public init(baseURL: String = Constant.baseUrl.value, path: String, queryItems: [URLQueryItem] = []) {
         self.baseURL = baseURL
         self.path = path
         self.queryItems = queryItems
@@ -26,7 +36,7 @@ public struct CLEndpoint {
 public extension CLEndpoint {
     var url: URL {
         var components = URLComponents()
-        components.scheme = URL_SCHEME
+        components.scheme = Constant.scheme.value
         components.host = baseURL
         components.path = "/" + path
         components.queryItems = queryItems
