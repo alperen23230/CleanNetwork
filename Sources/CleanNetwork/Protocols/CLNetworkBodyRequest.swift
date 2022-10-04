@@ -12,7 +12,5 @@ public protocol CLNetworkBodyRequest: CLNetworkDecodableRequest {
 }
 
 public extension CLNetworkBodyRequest {
-    var method: CLHTTPMethod {
-        return .post
-    }
+    var method: CLHTTPMethod { .post }
 }
