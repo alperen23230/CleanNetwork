@@ -51,4 +51,20 @@ final class CLNetworkServiceTests: XCTestCase {
         
         XCTAssertEqual(usersResponseData, expectedData)
     }
+    
+    func test_when_came_error_from_api() async {
+        let expectedError = NSError(domain: "url not found", code: -1)
+        
+        MockURLSessionProtocol.loadingHandler = {
+            throw expectedError
+        }
+        
+        do {
+            _ = try await networkService.fetch(request)
+            XCTFail("This call should throw an error.")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, expectedError.domain)
+            XCTAssertEqual(error.code, expectedError.code)
+        }
+    }
 }

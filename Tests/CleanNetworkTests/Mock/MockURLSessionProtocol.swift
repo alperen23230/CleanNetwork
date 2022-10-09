@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 
 class MockURLSessionProtocol: URLProtocol {
-    static var loadingHandler: (() -> (HTTPURLResponse, Data?))?
+    static var loadingHandler: (() throws -> (HTTPURLResponse, Data?))?
     
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -26,11 +26,16 @@ class MockURLSessionProtocol: URLProtocol {
             return
         }
         
-        let (response, data) = handler()
-        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-        if let data {
-            client?.urlProtocol(self, didLoad: data)
+        do {
+            let (response, data) = try handler()
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            if let data {
+                client?.urlProtocol(self, didLoad: data)
+            }
+        } catch {
+            client?.urlProtocol(self, didFailWithError: error)
         }
+        
         client?.urlProtocolDidFinishLoading(self)
     }
     
