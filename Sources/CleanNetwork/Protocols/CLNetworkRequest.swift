@@ -12,11 +12,6 @@ public protocol CLNetworkRequest {
 }
 
 public extension CLNetworkRequest {
-    var method: CLHTTPMethod {
-        return .get
-    }
-    
-    var headers: [String: String] {
-        return [:]
-    }
+    var method: CLHTTPMethod { .get }
+    var headers: [String: String] { .init() }
 }
