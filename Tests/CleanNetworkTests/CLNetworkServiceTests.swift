@@ -17,12 +17,13 @@ final class CLNetworkServiceTests: XCTestCase {
         BASE_URL = "mockAPI.com"
         let endpoint = CLEndpoint(path: "/mock")
         request = UsersMockRequest(endpoint: endpoint)
+        
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.protocolClasses = [MockURLSessionProtocol.self]
-        let networkConfig = CLNetworkConfig()
-        networkConfig.loggerEnabled = false
-        networkConfig.urlSession = URLSession(configuration: sessionConfiguration)
-        networkService = CLNetworkService(config: networkConfig)
+        
+        CLNetworkConfig.shared.loggerEnabled = false
+        CLNetworkConfig.shared.urlSession = URLSession(configuration: sessionConfiguration)
+        networkService = .shared
     }
 
     override func tearDownWithError() throws {
