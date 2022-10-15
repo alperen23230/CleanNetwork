@@ -20,6 +20,7 @@ final class CLNetworkServiceTests: XCTestCase {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.protocolClasses = [MockURLSessionProtocol.self]
         let networkConfig = CLNetworkConfig()
+        networkConfig.loggerEnabled = false
         networkConfig.urlSession = URLSession(configuration: sessionConfiguration)
         networkService = CLNetworkService(config: networkConfig)
     }
