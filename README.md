@@ -52,7 +52,7 @@ struct ExampleRequest: CLNetworkDecodableRequest {
 }
 ```
 ### Creating CLEndpoint
-CLEndpoint is a struct which represents an API endpoint. It has a baseURL, path and queryItems variables. For baseURL, there is a global variable for this. It's called `BASE_URL`. (For example you can set BASE_URL in AppDelegate) For url scheme, it uses `https` by default but you can change using `URL_SCHEME` global variable.
+CLEndpoint is a struct which represents an API endpoint. It has a baseURL, path and queryItems variables. For baseURL, there is a static variable inside the `CLURLComponent` enum. It's called `CLURLComponent.baseURL`. (For example you can set `CLURLComponent.baseURL` in AppDelegate) For url scheme, it uses `https` by default but you can change using `urlScheme` static variable inside the `CLURLComponent`.
 
 ```swift
 public struct CLEndpoint {
