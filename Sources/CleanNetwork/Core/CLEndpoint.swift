@@ -7,15 +7,19 @@
 
 import Foundation
 
-public var BASE_URL = ""
-public var URL_SCHEME = "https"
+public enum CLURLComponent {
+    public static var baseURL = ""
+    public static var urlScheme = "https"
+}
 
 public struct CLEndpoint {
     public var baseURL: String
     public var path: String
     public var queryItems: [URLQueryItem]
     
-    public init(baseURL: String = BASE_URL, path: String, queryItems: [URLQueryItem] = []) {
+    public init(baseURL: String = CLURLComponent.baseURL,
+                path: String,
+                queryItems: [URLQueryItem] = []) {
         self.baseURL = baseURL
         self.path = path
         self.queryItems = queryItems
@@ -26,7 +30,7 @@ public struct CLEndpoint {
 public extension CLEndpoint {
     var url: URL {
         var components = URLComponents()
-        components.scheme = URL_SCHEME
+        components.scheme = CLURLComponent.urlScheme
         components.host = baseURL
         components.path = "/" + path
         components.queryItems = queryItems

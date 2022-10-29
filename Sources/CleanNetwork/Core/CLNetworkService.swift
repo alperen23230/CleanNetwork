@@ -9,13 +9,12 @@ import Foundation
 
 public struct CLNetworkService: NetworkService {
     
-    public static let shared = CLNetworkService()
+    public static var shared = CLNetworkService()
     
-    var config: CLNetworkConfig
+    public var config: NetworkConfig = CLNetworkConfig()
+    private let successRange = Set(200...299)
     
-    public init(config: CLNetworkConfig = CLNetworkConfig.shared) {
-        self.config = config
-    }
+    private init() {}
     
     public func fetch<T: CLNetworkBodyRequest>(_ request: T) async throws -> T.ResponseType {
         var urlRequest = URLRequest(url: request.endpoint.url)
@@ -47,11 +46,13 @@ public struct CLNetworkService: NetworkService {
         if config.loggerEnabled {
             CLNetworkLogger.log(request: urlRequest)
         }
+        
         let data: T = try await withCheckedThrowingContinuation { continuation in
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
                     CLNetworkLogger.log(data: data, response: urlResponse, error: error)
                 }
+                
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
@@ -61,7 +62,7 @@ public struct CLNetworkService: NetworkService {
                     }
                     do {
                         guard let urlResponse = response as? HTTPURLResponse,
-                              (200...299).contains(urlResponse.statusCode) else {
+                              successRange.contains(urlResponse.statusCode) else {
                             if let statusCode = (response as? HTTPURLResponse)?.statusCode {
                                 continuation.resume(throwing: CLError.apiError(data, statusCode))
                             } else {
@@ -88,11 +89,13 @@ public struct CLNetworkService: NetworkService {
         if config.loggerEnabled {
             CLNetworkLogger.log(request: urlRequest)
         }
+        
         let data: Data = try await withCheckedThrowingContinuation { continuation in
             self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
                 if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
                     CLNetworkLogger.log(data: data, response: urlResponse, error: error)
                 }
+                
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
@@ -101,7 +104,7 @@ public struct CLNetworkService: NetworkService {
                         return
                     }
                     guard let urlResponse = response as? HTTPURLResponse,
-                          (200...299).contains(urlResponse.statusCode) else {
+                          successRange.contains(urlResponse.statusCode) else {
                         if let statusCode = (response as? HTTPURLResponse)?.statusCode {
                             continuation.resume(throwing: CLError.apiError(data, statusCode))
                         } else {

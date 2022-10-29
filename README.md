@@ -12,6 +12,7 @@
 
 - [CleanNetwork](#cleannetwork)
 - [Table of contents](#table-of-contents)
+  - [Swift Style Guide](#swift-style-guide)
   - [Installation](#installation)
     - [Swift Package Manager](#swift-package-manager)
   - [Simple Usage](#simple-usage)
@@ -23,6 +24,12 @@
     - [Customize CLNetworkService](#customize-clnetworkservice)
       - [CLNetworkConfig](#clnetworkconfig)
     - [Error Handling](#error-handling)
+
+## Swift Style Guide
+This project uses Swift API and Raywenderlich guideline. Please check it out before contributing.
+
+* [The Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines)
+* [The Raywenderlich Swift Style Guide](https://github.com/raywenderlich/swift-style-guide)
 
 ## Installation
 ### Swift Package Manager
@@ -52,7 +59,7 @@ struct ExampleRequest: CLNetworkDecodableRequest {
 }
 ```
 ### Creating CLEndpoint
-CLEndpoint is a struct which represents an API endpoint. It has a baseURL, path and queryItems variables. For baseURL, there is a global variable for this. It's called `BASE_URL`. (For example you can set BASE_URL in AppDelegate) For url scheme, it uses `https` by default but you can change using `URL_SCHEME` global variable.
+CLEndpoint is a struct which represents an API endpoint. It has a baseURL, path and queryItems variables. For baseURL, there is a static variable inside the `CLURLComponent` enum. It's called `CLURLComponent.baseURL`. (For example you can set `CLURLComponent.baseURL` in AppDelegate) For url scheme, it uses `https` by default but you can change using `urlScheme` static variable inside the `CLURLComponent`.
 
 ```swift
 public struct CLEndpoint {
@@ -60,7 +67,9 @@ public struct CLEndpoint {
     public var path: String
     public var queryItems: [URLQueryItem]
     
-    public init(baseURL: String = BASE_URL, path: String, queryItems: [URLQueryItem] = []) {
+    public init(baseURL: String = CLURLComponent.baseURL,
+                path: String,
+                queryItems: [URLQueryItem] = []) {
         self.baseURL = baseURL
         self.path = path
         self.queryItems = queryItems
@@ -126,21 +135,17 @@ public protocol CLNetworkBodyRequest: CLNetworkDecodableRequest {
 ```
 ### Customize CLNetworkService
 
-When you want to customize the `CLNetworkService` you have to use the `CLNetworkConfig` model. CLNetworkService takes this object in its initializer. By default it uses shared object of `CLNetworkConfig`.
+When you want to customize the `CLNetworkService` you have to use the `NetworkConfig` instance inside the `CLNetworkService`. By default it uses instance of `CLNetworkConfig`.
 
 ```swift
-public init(config: CLNetworkConfig = CLNetworkConfig.shared) {
-    self.config = config
-}
+public var config: NetworkConfig = CLNetworkConfig()
 ```
 
 #### CLNetworkConfig
-You can use both shared object or creating instance yourself. 
+You can change the configuration using `CLNetworkConfig` instance.
 
 ```swift
-public class CLNetworkConfig {
-    public static let shared = CLNetworkConfig()
-
+public class CLNetworkConfig: NetworkConfig {
     public var decoder = JSONDecoder()
     public var encoder = JSONEncoder()
     public var urlSession = URLSession.shared

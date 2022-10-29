@@ -14,19 +14,20 @@ final class CLNetworkServiceTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        BASE_URL = "mockAPI.com"
+        CLURLComponent.baseURL = "mockAPI.com"
         let endpoint = CLEndpoint(path: "/mock")
         request = UsersMockRequest(endpoint: endpoint)
+        
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.protocolClasses = [MockURLSessionProtocol.self]
-        let networkConfig = CLNetworkConfig()
-        networkConfig.loggerEnabled = false
-        networkConfig.urlSession = URLSession(configuration: sessionConfiguration)
-        networkService = CLNetworkService(config: networkConfig)
+        
+        networkService = .shared
+        networkService.config.loggerEnabled = false
+        networkService.config.urlSession = URLSession(configuration: sessionConfiguration)
     }
 
     override func tearDownWithError() throws {
-        BASE_URL = ""
+        CLURLComponent.baseURL = ""
         request = nil
         networkService = nil
         try super.tearDownWithError()
