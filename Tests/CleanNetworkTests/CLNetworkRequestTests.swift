@@ -15,7 +15,7 @@ class CLNetworkRequestTests: XCTestCase {
     }
     
     override func tearDown() async throws {
-        BASE_URL = ""
+        CLURLComponent.baseURL = ""
         try await super.tearDown()
     }
     
@@ -40,7 +40,7 @@ class CLNetworkRequestTests: XCTestCase {
     }
     
     func test_request_with_different_baseURL() throws {
-        BASE_URL = "mockAPI.com"
+        CLURLComponent.baseURL = "mockAPI.com"
         let differentBaseURL = "mockAPI2.com"
         let endpoint = CLEndpoint(baseURL: differentBaseURL, path: "/mock")
         let method: CLHTTPMethod = .get

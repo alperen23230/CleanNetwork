@@ -14,7 +14,7 @@ final class CLNetworkServiceTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        BASE_URL = "mockAPI.com"
+        CLURLComponent.baseURL = "mockAPI.com"
         let endpoint = CLEndpoint(path: "/mock")
         request = UsersMockRequest(endpoint: endpoint)
         
@@ -27,7 +27,7 @@ final class CLNetworkServiceTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        BASE_URL = ""
+        CLURLComponent.baseURL = ""
         request = nil
         networkService = nil
         try super.tearDownWithError()
