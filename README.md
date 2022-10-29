@@ -12,6 +12,7 @@
 
 - [CleanNetwork](#cleannetwork)
 - [Table of contents](#table-of-contents)
+  - [Swift Style Guide](#swift-style-guide)
   - [Installation](#installation)
     - [Swift Package Manager](#swift-package-manager)
   - [Simple Usage](#simple-usage)
@@ -23,6 +24,12 @@
     - [Customize CLNetworkService](#customize-clnetworkservice)
       - [CLNetworkConfig](#clnetworkconfig)
     - [Error Handling](#error-handling)
+
+## Swift Style Guide
+This project uses Swift API and Raywenderlich guideline. Please check it out before contributing.
+
+* [The Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines)
+* [The Raywenderlich Swift Style Guide](https://github.com/raywenderlich/swift-style-guide)
 
 ## Installation
 ### Swift Package Manager
