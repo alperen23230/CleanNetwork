@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkService {
-    var config: CLNetworkConfig { get }
+    var config: NetworkConfig { get set }
     
     func fetch<T: CLNetworkBodyRequest>(_ request: T) async throws -> T.ResponseType
     func fetch<T: CLNetworkDecodableRequest>(_ request: T) async throws -> T.ResponseType
