@@ -60,7 +60,9 @@ public struct CLEndpoint {
     public var path: String
     public var queryItems: [URLQueryItem]
     
-    public init(baseURL: String = BASE_URL, path: String, queryItems: [URLQueryItem] = []) {
+    public init(baseURL: String = CLURLComponent.baseURL,
+                path: String,
+                queryItems: [URLQueryItem] = []) {
         self.baseURL = baseURL
         self.path = path
         self.queryItems = queryItems
@@ -126,21 +128,17 @@ public protocol CLNetworkBodyRequest: CLNetworkDecodableRequest {
 ```
 ### Customize CLNetworkService
 
-When you want to customize the `CLNetworkService` you have to use the `CLNetworkConfig` model. CLNetworkService takes this object in its initializer. By default it uses shared object of `CLNetworkConfig`.
+When you want to customize the `CLNetworkService` you have to use the `NetworkConfig` instance inside the `CLNetworkService`. By default it uses instance of `CLNetworkConfig`.
 
 ```swift
-public init(config: CLNetworkConfig = CLNetworkConfig.shared) {
-    self.config = config
-}
+public var config: NetworkConfig = CLNetworkConfig()
 ```
 
 #### CLNetworkConfig
-You can use both shared object or creating instance yourself. 
+You can change the configuration using `CLNetworkConfig` instance.
 
 ```swift
-public class CLNetworkConfig {
-    public static let shared = CLNetworkConfig()
-
+public class CLNetworkConfig: NetworkConfig {
     public var decoder = JSONDecoder()
     public var encoder = JSONEncoder()
     public var urlSession = URLSession.shared

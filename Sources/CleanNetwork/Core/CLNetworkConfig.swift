@@ -7,14 +7,20 @@
 
 import Foundation
 
-public class CLNetworkConfig {
-    public static let shared = CLNetworkConfig()
+public protocol NetworkConfig {
+    var decoder: JSONDecoder { get set }
+    var encoder: JSONEncoder { get set }
+    var urlSession: URLSession { get set }
+    var loggerEnabled: Bool { get set }
+    var sharedHeaders: [String: String] { get set }
+}
 
+public class CLNetworkConfig: NetworkConfig {
     public var decoder = JSONDecoder()
     public var encoder = JSONEncoder()
     public var urlSession = URLSession.shared
     public var loggerEnabled = true
     public var sharedHeaders: [String: String] = [:]
 
-    private init() {}
+    public init() {}
 }

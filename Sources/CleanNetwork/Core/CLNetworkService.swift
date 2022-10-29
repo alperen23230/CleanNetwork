@@ -9,9 +9,9 @@ import Foundation
 
 public struct CLNetworkService: NetworkService {
     
-    public static let shared = CLNetworkService()
-    var config: CLNetworkConfig = .shared
+    public static var shared = CLNetworkService()
     
+    public var config: NetworkConfig = CLNetworkConfig()
     private let successRange = Set(200...299)
     
     private init() {}

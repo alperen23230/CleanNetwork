@@ -21,9 +21,9 @@ final class CLNetworkServiceTests: XCTestCase {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.protocolClasses = [MockURLSessionProtocol.self]
         
-        CLNetworkConfig.shared.loggerEnabled = false
-        CLNetworkConfig.shared.urlSession = URLSession(configuration: sessionConfiguration)
         networkService = .shared
+        networkService.config.loggerEnabled = false
+        networkService.config.urlSession = URLSession(configuration: sessionConfiguration)
     }
 
     override func tearDownWithError() throws {
