@@ -16,5 +16,5 @@ public class CLNetworkConfig {
     public var loggerEnabled = true
     public var sharedHeaders: [String: String] = [:]
 
-    public init() {}
+    private init() {}
 }
