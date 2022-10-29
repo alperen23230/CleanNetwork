@@ -15,8 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Set a base URL for CLNetworkEndpoint
-        BASE_URL = "jsonplaceholder.typicode.com"
-        CLNetworkConfig.shared.sharedHeaders = ["Content-Type": "application/json; charset=utf-8"]
+        CLURLComponent.baseURL = "jsonplaceholder.typicode.com"
+        CLNetworkService.shared.config.sharedHeaders = [
+            "Content-Type": "application/json; charset=utf-8"
+        ]
         return true
     }
 }
