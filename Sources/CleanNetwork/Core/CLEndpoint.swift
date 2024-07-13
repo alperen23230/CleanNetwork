@@ -36,9 +36,7 @@ public extension CLEndpoint {
         components.queryItems = queryItems
         
         guard let url = components.url else {
-            preconditionFailure(
-                "Invalid URL components: \(components)"
-            )
+            preconditionFailure("Invalid URL components: \(components)")
         }
         
         return url
