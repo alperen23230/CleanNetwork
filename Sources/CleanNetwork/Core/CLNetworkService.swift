@@ -8,7 +8,6 @@
 import Foundation
 
 public struct CLNetworkService: NetworkService {
-    
     public static var shared = CLNetworkService()
     
     public var config: NetworkConfig = CLNetworkConfig()
@@ -17,106 +16,55 @@ public struct CLNetworkService: NetworkService {
     private init() {}
     
     public func fetch<T: CLNetworkBodyRequest>(_ request: T) async throws -> T.ResponseType {
-        var urlRequest = URLRequest(url: request.endpoint.url)
-        let allHeaders = config.sharedHeaders.merging(request.headers) { (_, new) in new }
-        urlRequest.allHTTPHeaderFields = allHeaders
-        urlRequest.httpMethod = request.method.rawValue
-        let requestBody = try config.encoder.encode(request.requestBody)
-        urlRequest.httpBody = requestBody
+        let urlRequest = try request.build(encoder: config.encoder, with: config.sharedHeaders)
         return try await fetch(urlRequest: urlRequest)
     }
     
     public func fetch<T: CLNetworkDecodableRequest>(_ request: T) async throws -> T.ResponseType {
-        var urlRequest = URLRequest(url: request.endpoint.url)
-        let allHeaders = config.sharedHeaders.merging(request.headers) { (_, new) in new }
-        urlRequest.allHTTPHeaderFields = allHeaders
-        urlRequest.httpMethod = request.method.rawValue
-        return try await fetch(urlRequest: urlRequest)
+        return try await fetch(urlRequest: request.build(with: config.sharedHeaders))
     }
     
     public func fetch<T: CLNetworkRequest>(_ request: T) async throws -> Data {
-        var urlRequest = URLRequest(url: request.endpoint.url)
-        let allHeaders = config.sharedHeaders.merging(request.headers) { (_, new) in new }
-        urlRequest.allHTTPHeaderFields = allHeaders
-        urlRequest.httpMethod = request.method.rawValue
-        return try await fetchData(urlRequest: urlRequest)
+        return try await fetch(urlRequest: request.build(with: config.sharedHeaders))
     }
     
     func fetch<T: Decodable>(urlRequest: URLRequest) async throws -> T {
-        if config.loggerEnabled {
-            CLNetworkLogger.log(request: urlRequest)
-        }
+        let data = try await fetch(urlRequest: urlRequest)
         
-        let data: T = try await withCheckedThrowingContinuation { continuation in
-            self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
-                if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
-                    CLNetworkLogger.log(data: data, response: urlResponse, error: error)
-                }
-                
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    guard let data = data else {
-                        continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
-                        return
-                    }
-                    do {
-                        guard let urlResponse = response as? HTTPURLResponse,
-                              successRange.contains(urlResponse.statusCode) else {
-                            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                                continuation.resume(throwing: CLError.apiError(data, statusCode))
-                            } else {
-                                continuation.resume(throwing: CLError.errorMessage(.statusCodeIsNotValid))
-                            }
-                            return
-                        }
-                        let decodedData = try self.config.decoder.decode(T.self, from: data)
-                        continuation.resume(returning: decodedData)
-                    } catch {
-                        if config.loggerEnabled, let error = error as? DecodingError {
-                            CLNetworkLogger.logDecodingError(with: error)
-                        }
-                        continuation.resume(throwing: error)
-                    }
-                }
+        do {
+            return try config.decoder.decode(T.self, from: data)
+        } catch {
+            if config.loggerEnabled, let error = error as? DecodingError {
+                CLNetworkLogger.logDecodingError(with: error)
             }
-            .resume()
+            
+            throw error
         }
-        return data
     }
     
-    func fetchData(urlRequest: URLRequest) async throws -> Data {
-        if config.loggerEnabled {
-            CLNetworkLogger.log(request: urlRequest)
-        }
+    func fetch(urlRequest: URLRequest) async throws -> Data {
+        CLNetworkLogger.log(request: urlRequest)
         
-        let data: Data = try await withCheckedThrowingContinuation { continuation in
-            self.config.urlSession.dataTask(with: urlRequest) { (data, response, error) in
-                if config.loggerEnabled, let urlResponse = response as? HTTPURLResponse {
-                    CLNetworkLogger.log(data: data, response: urlResponse, error: error)
-                }
-                
-                if let error = error {
-                    continuation.resume(throwing: error)
+        do {
+            let (data, response) = try await config.urlSession.data(for: urlRequest)
+            
+            if let urlResponse = response as? HTTPURLResponse {
+                CLNetworkLogger.log(data: data, response: urlResponse)
+            }
+            
+            guard let urlResponse = response as? HTTPURLResponse,
+                  successRange.contains(urlResponse.statusCode) else {
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                    throw CLError.apiError(data, statusCode)
                 } else {
-                    guard let data = data else {
-                        continuation.resume(throwing: CLError.errorMessage(.dataIsNil))
-                        return
-                    }
-                    guard let urlResponse = response as? HTTPURLResponse,
-                          successRange.contains(urlResponse.statusCode) else {
-                        if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                            continuation.resume(throwing: CLError.apiError(data, statusCode))
-                        } else {
-                            continuation.resume(throwing: CLError.errorMessage(.statusCodeIsNotValid))
-                        }
-                        return
-                    }
-                    continuation.resume(returning: data)
+                    throw CLError.errorMessage(.statusCodeIsNotValid)
                 }
             }
-            .resume()
+            
+            return data
+        } catch {
+            CLNetworkLogger.logError(with: error)
+            throw error
         }
-        return data
     }
 }

@@ -8,7 +8,11 @@
 import Foundation
 
 struct CLNetworkLogger {
+    static var loggerEnabled = true
+    
     static func log(request: URLRequest) {
+        guard loggerEnabled else { return }
+        
         print("\n - - - - - - - - - - OUTGOING - - - - - - - - - - \n")
         defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
         
@@ -38,7 +42,9 @@ struct CLNetworkLogger {
         print(output)
     }
     
-    static func log(data: Data?, response: HTTPURLResponse?, error: Error?) {
+    static func log(data: Data?, response: HTTPURLResponse?) {
+        guard loggerEnabled else { return }
+        
         print("\n - - - - - - - - - - INCOMMING - - - - - - - - - - \n")
         defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
         
@@ -68,13 +74,17 @@ struct CLNetworkLogger {
         if let body = data {
             output += "\n\(String(data: body, encoding: .utf8) ?? "")\n"
         }
-        if error != nil {
-            output += "\nError: \(error!.localizedDescription)\n"
-        }
         print(output)
     }
     
+    static func logError(with error: Error) {
+        guard loggerEnabled else { return }
+        print("\nError: \(error.localizedDescription)\n")
+    }
+    
     static func logDecodingError(with error: DecodingError) {
+        guard loggerEnabled else { return }
+
         print("\n\nDecoding Error\n")
         switch error {
         case .typeMismatch(let type, let context):
