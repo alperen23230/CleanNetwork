@@ -2,7 +2,7 @@
 
 ![swift package manager](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen)
 ![swift](https://img.shields.io/badge/swift-5.5-orange?logo=swift)
-![platforms](https://img.shields.io/badge/platforms-macOS--10.15_iOS--13_tvOS--13_watchOS--6-yellowgreen)
+![platforms](https://img.shields.io/badge/platforms-macOS--12_iOS--15_tvOS--15_watchOS--8-yellowgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
 [![Twitter:@alperenunal68](https://img.shields.io/badge/twitter-@alperenunal68-blue.svg?style=flat)](https://twitter.com/alperenunal68)
 
@@ -38,7 +38,7 @@ Once you have your Swift package set up, adding CleanNetwork as a dependency is 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/alperen23230/CleanNetwork", .upToNextMajor(from: "1.0.0"))
+    .package(url: "https://github.com/alperen23230/CleanNetwork", .upToNextMajor(from: "1.1.0"))
 ]
 ```
 
